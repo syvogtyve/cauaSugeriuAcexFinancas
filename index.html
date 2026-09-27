@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Blog Financeiro do 2º Ano</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #153b43; --cream: #fff9e9; --paper: #fffef9; --green: #137c68;
+      --green-dark: #075848; --lime: #d9f36a; --coral: #ff8c75; --blue: #ccecf4;
+      --line: #c8ddd6; --muted: #58716f;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; width: 100%; color: var(--ink); background: var(--cream); font-family: "DM Sans", sans-serif; }
+    .paper-pattern {
+      background-color: var(--cream);
+      background-image: radial-gradient(rgba(19,124,104,0.13) 1px, transparent 1px), radial-gradient(rgba(255,140,117,0.11) 1px, transparent 1px);
+      background-position: 0 0, 14px 14px; background-size: 28px 28px;
+    }
+    .site-header { backdrop-filter: blur(14px); background: rgba(255,249,233,0.92); border-bottom: 2px solid var(--ink); }
+    .brand-mark { width: 42px; height: 42px; display: grid; place-items: center; border: 2px solid var(--ink); border-radius: 50%; background: var(--lime); transform: rotate(-8deg); }
+    .nav-link { font-size: 0.86rem; font-weight: 700; color: var(--ink); text-decoration: none; white-space: nowrap; }
+    .nav-link:hover, .nav-link:focus-visible { color: var(--green); }
+    .almanaque-card { background: var(--paper); border: 2px solid var(--ink); border-radius: 22px; box-shadow: 6px 6px 0 var(--ink); }
+    .sticker { display: inline-flex; align-items: center; gap: .4rem; padding: .42rem .75rem; border: 2px solid var(--ink); border-radius: 999px; background: var(--lime); font-size: .78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; transform: rotate(-2deg); }
+    .editorial-title { font-family: "Fraunces", serif; font-size: clamp(2.7rem,7vw,5.8rem); line-height: .94; letter-spacing: -.06em; }
+    .section-title { font-family: "Fraunces", serif; font-size: clamp(2rem,4vw,3.4rem); line-height: 1; letter-spacing: -.045em; }
+    .section-kicker { color: var(--green); font-size: .76rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+    .path-button { min-height: 155px; padding: 1rem; text-align: left; border: 2px solid var(--ink); border-radius: 18px; background: #fff; transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease; }
+    .path-button:hover, .path-button:focus-visible, .path-button.is-selected { background: var(--lime); box-shadow: 4px 4px 0 var(--ink); transform: translate(-2px,-2px); }
+    .path-icon { width: 40px; height: 40px; display: grid; place-items: center; margin-bottom: .8rem; border-radius: 12px; background: var(--blue); color: var(--ink); }
+    label { display: block; margin-bottom: .4rem; font-size: .84rem; font-weight: 700; }
+    input, textarea { width: 100%; border: 2px solid var(--line); border-radius: 12px; padding: .75rem .85rem; background: #fff; color: var(--ink); font: inherit; outline: none; }
+    input:focus, textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(19,124,104,.14); }
+    textarea { min-height: 112px; resize: vertical; }
+    .primary-button, .secondary-button, .poll-button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: .7rem 1rem; border: 2px solid var(--ink); border-radius: 12px; cursor: pointer; font: inherit; font-weight: 800; transition: transform 160ms ease, box-shadow 160ms ease; }
+    .primary-button { background: var(--green); color: #fff; box-shadow: 3px 3px 0 var(--ink); }
+    .secondary-button, .poll-button { background: var(--lime); color: var(--ink); }
+    .primary-button:hover, .secondary-button:hover, .poll-button:hover, .primary-button:focus-visible, .secondary-button:focus-visible, .poll-button:focus-visible { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--ink); }
+    .check-row { display: flex; gap: .75rem; align-items: flex-start; padding: .9rem; border: 2px solid var(--line); border-radius: 14px; background: #fff; }
+    .check-row input { width: 20px; height: 20px; flex: 0 0 auto; accent-color: var(--green); }
+    .check-row label { margin: 0; cursor: pointer; font-weight: 600; }
+    .progress-track { height: 14px; overflow: hidden; border: 2px solid var(--ink); border-radius: 999px; background: #e3eeea; }
+    .progress-fill { width: 0%; height: 100%; border-radius: inherit; background: var(--lime); transition: width 250ms ease; }
+    .message-box { min-height: 48px; padding: .85rem 1rem; border-radius: 12px; background: #eaf8e3; color: var(--green-dark); font-weight: 700; }
+    .expense-total { padding: 1rem; border: 2px dashed var(--green); border-radius: 14px; background: #eefbd2; }
+    .expense-total strong { display: block; margin-top: .2rem; font-family: "Fraunces", serif; font-size: 2rem; }
+    .suggestion-item { padding: .8rem 0; border-bottom: 1px dashed var(--line); color: var(--muted); }
+    .bar-shell { height: 18px; overflow: hidden; border: 2px solid var(--ink); border-radius: 999px; background: #edf2ee; }
+    .bar-simple, .bar-compound { width: 0%; height: 100%; border-radius: 999px; transition: width 450ms ease; }
+    .bar-simple { background: var(--coral); }
+    .bar-compound { background: var(--green); }
+    .quiz-option { display: flex; gap: .65rem; align-items: center; padding: .7rem; border: 2px solid var(--line); border-radius: 12px; background: #fff; cursor: pointer; }
+    .quiz-option input { width: 18px; height: 18px; accent-color: var(--green); }
+    .quiz-option:hover { border-color: var(--green); }
+    .tip-card { position: relative; overflow: hidden; background: var(--green-dark); color: #fff; }
+    .tip-card::after { content: "✦"; position: absolute; right: 1rem; top: -1.8rem; font-size: 9rem; color: rgba(217,243,106,.18); }
+    .poll-meter { height: 11px; overflow: hidden; border-radius: 999px; background: #dce8e3; }
+    .poll-meter span { display: block; height: 100%; background: var(--green); transition: width 300ms ease; }
+    .mascot-wrap { display: grid; place-items: center; min-height: 300px; }
+    .focus-ring:focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; }
+    @media (max-width: 680px) {
+      .site-header nav { justify-content: flex-start; overflow-x: auto; }
+      .editorial-title { font-size: clamp(2.9rem,15vw,4.7rem); }
+    }
+  </style>
+</head>
+<body class="paper-pattern w-full">
+  <header class="site-header sticky top-0 z-50 w-full">
+    <div class="mx-auto flex max-w-6xl items-center gap-4 px-5 py-3">
+      <div class="brand-mark" aria-hidden="true"><i data-lucide="badge-dollar-sign" style="width:23px;height:23px;"></i></div>
+      <a href="#inicio" class="font-extrabold tracking-tight text-lg focus-ring">Blog Financeiro do 2º Ano</a>
+      <nav aria-label="Navegação principal" class="ml-auto flex items-center gap-4">
+        <a class="nav-link focus-ring" href="#projecao">Despesas Previstas</a>
+        <a class="nav-link focus-ring" href="#pratique">Autoavaliação</a>
+        <a class="nav-link focus-ring" href="#quiz">Quiz</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="inicio" class="w-full px-5 pb-14 pt-12 sm:pt-16">
+      <div class="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.15fr_.85fr]">
+        <div>
+          <span class="sticker">Edição do Cauã e da Ana Julia · Setembro</span>
+          <h1 class="editorial-title mt-5 max-w-3xl">Seu dinheiro, seu plano</h1>
+          <p class="mt-6 max-w-2xl text-lg leading-relaxed text-[#42605f]">Um blog feito para a turma pensar em dinheiro antes de sair do Ensino Médio: para onde ele vai, para onde pode ir e o que fazer com o que sobra.</p>
+          <a href="#projecao" class="primary-button focus-ring mt-7 no-underline">Boraa lá!!!</a>
+        </div>
+        <div class="almanaque-card p-6 sm:p-9">
+          <div class="mascot-wrap">
+            <svg viewBox="0 0 330 290" role="img" aria-label="Mascote em forma de cofrinho lendo um plano financeiro" class="w-full max-w-sm"><path d="M72 213C42 200 33 162 55 137c9-10 20-15 35-16 8-39 42-67 84-67 29 0 56 13 73 36 33-4 61 21 61 54 0 13-4 25-12 35 5 17-2 38-20 49-16 10-36 11-53 4-20 19-49 29-78 25-19-3-36-11-49-24-9 1-17-1-24-5Z" fill="#fedcdb" stroke="#153b43" stroke-width="6" stroke-linejoin="round" /><path d="M94 113c3-22 18-40 39-48" fill="none" stroke="#153b43" stroke-width="6" stroke-linecap="round" /><path d="M121 87c12-11 31-15 48-12" fill="none" stroke="#153b43" stroke-width="6" stroke-linecap="round" /><circle cx="127" cy="143" r="7" fill="#153b43" /><circle cx="195" cy="143" r="7" fill="#153b43" /><path d="M146 169c13 11 29 11 42 0" fill="none" stroke="#153b43" stroke-width="6" stroke-linecap="round" /><path d="M84 219v25M120 236v22M245 227v25M278 208v21" stroke="#153b43" stroke-width="7" stroke-linecap="round" /><path d="M230 92l25-20 11 29" fill="#ff8c75" stroke="#153b43" stroke-width="6" stroke-linejoin="round" /><path d="M99 176l95 7-14 68-94-8Z" fill="#ccecf4" stroke="#153b43" stroke-width="6" stroke-linejoin="round" /><path d="M145 181l-8 65" stroke="#153b43" stroke-width="4" /><path d="M101 198l28 2M155 201l24 2M97 216l27 2M153 220l20 2" stroke="#137c68" stroke-width="4" stroke-linecap="round" /><circle cx="275" cy="58" r="22" fill="#ffe500" stroke="#ffc800" stroke-width="5" /><path d="M274 45v26M262 58h26" stroke="#153b43" stroke-width="5" stroke-linecap="round" /></svg>
+          </div>
+          <p class="text-center font-bold text-[#42605f]">Era para ser um cofre de porquinho... Enfim, olha que bonitinho, lendo seu plano financeiro!</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="projecao" class="w-full bg-[#ccecf4] px-5 py-16">
+      <div class="mx-auto max-w-6xl">
+        <p class="section-kicker">Próximos passos</p>
+        <h2 class="section-title mt-3">Escolha um caminho</h2>
+        <p class="mt-4 max-w-3xl leading-relaxed text-[#42605f]">Estudar, trabalhar ou empreender pedem planejamentos diferentes. Escolha o caminho mais provável pra você e veja uma reflexão rápida sobre ele.</p>
+        <div class="mt-8 grid gap-4 md:grid-cols-3" role="group" aria-label="Escolha seu caminho pós-Ensino Médio">
+          <button type="button" id="path-study" class="path-button focus-ring" aria-pressed="false">
+            <span class="path-icon"><i data-lucide="graduation-cap" style="width:23px;height:23px;"></i></span>
+            <span class="block font-extrabold">Vou continuar estudando</span>
+          </button>
+          <button type="button" id="path-work" class="path-button focus-ring" aria-pressed="false">
+            <span class="path-icon"><i data-lucide="briefcase-business" style="width:23px;height:23px;"></i></span>
+            <span class="block font-extrabold">Vou entrar no mercado de trabalho</span>
+          </button>
+          <button type="button" id="path-business" class="path-button focus-ring" aria-pressed="false">
+            <span class="path-icon"><i data-lucide="rocket" style="width:23px;height:23px;"></i></span>
+            <span class="block font-extrabold">Vou empreender</span>
+          </button>
+        </div>
+        <div id="path-message" class="message-box mt-5" aria-live="polite">Pode escolher! Vai aparecer aqui</div>
+
+        <div class="almanaque-card mt-9 p-5 sm:p-7">
+          <h3 class="font-bold">Calculadora de despesas previstas</h3>
+          <p class="mt-2 leading-relaxed text-[#58716f]">Liste três despesas que você espera ter no seu caminho escolhido e veja o total.</p>
+          <form id="expense-form" class="mt-6 grid gap-4" novalidate>
+            <div class="grid gap-3 md:grid-cols-[1fr_180px]">
+              <div><label for="expense-one-name">Despesa 1</label><input id="expense-one-name" type="text" placeholder="Ex.: transporte" autocomplete="off"></div>
+              <div><label for="expense-one-value">Valor (R$)</label><input id="expense-one-value" type="number" min="0" step="0.01" inputmode="decimal"></div>
+            </div>
+            <div class="grid gap-3 md:grid-cols-[1fr_180px]">
+              <div><label for="expense-two-name">Despesa 2</label><input id="expense-two-name" type="text" placeholder="Ex.: material" autocomplete="off"></div>
+              <div><label for="expense-two-value">Valor (R$)</label><input id="expense-two-value" type="number" min="0" step="0.01" inputmode="decimal"></div>
+            </div>
+            <div class="grid gap-3 md:grid-cols-[1fr_180px]">
+              <div><label for="expense-three-name">Despesa 3</label><input id="expense-three-name" type="text" placeholder="Ex.: lazer" autocomplete="off"></div>
+              <div><label for="expense-three-value">Valor (R$)</label><input id="expense-three-value" type="number" min="0" step="0.01" inputmode="decimal"></div>
+            </div>
+          </form>
+          <div class="expense-total mt-5"><span class="font-bold">Total previsto</span><strong id="expense-total" aria-live="polite">R$ 0,00</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pratique" class="w-full px-5 py-16">
+      <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2">
+        <div>
+          <p class="section-kicker">Autoavaliação</p>
+          <h2 class="section-title mt-3">Onde você já está</h2>
+          <p class="mt-4 leading-relaxed text-[#58716f]">Marque o que já faz parte da sua rotina com dinheiro.</p>
+          <div class="mt-7 space-y-3">
+            <div class="check-row"><input id="check-one" type="checkbox"><label for="check-one">Eu sei mais ou menos quanto gasto por mês</label></div>
+            <div class="check-row"><input id="check-two" type="checkbox"><label for="check-two">Já separei dinheiro para um objetivo</label></div>
+            <div class="check-row"><input id="check-three" type="checkbox"><label for="check-three">Comparo preços antes de comprar algo</label></div>
+          </div>
+          <div class="mt-6">
+            <div class="flex items-center justify-between gap-4"><span class="font-bold">Seu progresso</span><span id="progress-count" class="font-extrabold" aria-live="polite">0/3</span></div>
+            <div class="progress-track mt-2" aria-label="Progresso da autoavaliação"><div id="progress-fill" class="progress-fill"></div></div>
+            <p id="progress-message" class="mt-3 font-bold text-[#137c68]" aria-live="polite"></p>
+          </div>
+        </div>
+        <aside class="almanaque-card p-5 sm:p-7" aria-label="Mural de sugestões">
+          <h2 class="font-bold">Mural de sugestões</h2>
+          <p class="mt-2 leading-relaxed text-[#58716f]">Deixe uma dica de finanças para o resto da turma.</p>
+          <form id="suggestion-form" class="mt-5">
+            <label for="suggestion-input">Sua sugestão</label>
+            <textarea id="suggestion-input"></textarea>
+            <button type="submit" class="primary-button focus-ring mt-3">Enviar sugestão</button>
+          </form>
+          <p id="suggestion-status" class="mt-3 font-semibold text-[#137c68]" aria-live="polite"></p>
+          <div class="mt-5 border-t-2 border-[#c8ddd6] pt-4">
+            <h3 class="font-bold">Sugestões recentes</h3>
+            <div id="suggestion-list" class="mt-2" aria-live="polite"></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="w-full bg-[#f7e7b8] px-5 py-16">
+      <div class="mx-auto grid max-w-6xl gap-9 lg:grid-cols-[.9fr_1.1fr]">
+        <div>
+          <p class="section-kicker">Na prática</p>
+          <h2 class="section-title mt-3">Juros simples x compostos</h2>
+          <p class="mt-4 leading-relaxed text-[#58716f]">Mude os valores e veja como o tempo muda o resultado.</p>
+          <form id="interest-form" class="mt-6 grid gap-4">
+            <div><label for="principal">Valor inicial (R$)</label><input id="principal" type="number" min="0" step="0.01" value="1000" inputmode="decimal"></div>
+            <div class="grid grid-cols-2 gap-3">
+              <div><label for="rate">Taxa mensal (%)</label><input id="rate" type="number" min="0" step="0.1" value="2" inputmode="decimal"></div>
+              <div><label for="time">Tempo (meses)</label><input id="time" type="number" min="1" step="1" value="12" inputmode="numeric"></div>
+            </div>
+            <button type="submit" class="primary-button focus-ring">Calcular</button>
+          </form>
+        </div>
+        <div class="almanaque-card p-5 sm:p-7">
+          <div>
+            <div class="flex justify-between gap-4"><span class="font-bold">Juros simples</span><strong id="simple-result">R$ 0,00</strong></div>
+            <div class="bar-shell mt-2"><div id="simple-bar" class="bar-simple"></div></div>
+          </div>
+          <div class="mt-7">
+            <div class="flex justify-between gap-4"><span class="font-bold">Juros compostos</span><strong id="compound-result">R$ 0,00</strong></div>
+            <div class="bar-shell mt-2"><div id="compound-bar" class="bar-compound"></div></div>
+          </div>
+          <p id="interest-note" class="mt-7 rounded-xl bg-[#eefbd2] p-4 font-semibold text-[#075848]" aria-live="polite">Preencha os campos para comparar os resultados.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz" class="w-full px-5 py-16">
+      <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.12fr_.88fr]">
+        <div class="almanaque-card p-5 sm:p-7">
+          <p class="section-kicker">Pensa rápido!</p>
+          <h2 class="section-title mt-3">Quiz do blog</h2>
+          <form id="quiz-form" class="mt-7 space-y-7">
+            <fieldset>
+              <legend class="font-bold">1. Qual desses é um gasto essencial?</legend>
+              <label class="quiz-option mt-3"><input type="radio" name="q1" value="a"><span>Um jogo novo de videogame</span></label>
+              <label class="quiz-option mt-2"><input type="radio" name="q1" value="b"><span>Transporte para o trabalho ou escola</span></label>
+            </fieldset>
+            <fieldset>
+              <legend class="font-bold">2. O que é uma reserva de emergência?</legend>
+              <label class="quiz-option mt-3"><input type="radio" name="q2" value="a"><span>Dinheiro guardado para imprevistos</span></label>
+              <label class="quiz-option mt-2"><input type="radio" name="q2" value="b"><span>Dinheiro gasto em promoções</span></label>
+            </fieldset>
+            <fieldset>
+              <legend class="font-bold">3. Nos juros compostos, os juros incidem sobre:</legend>
+              <label class="quiz-option mt-3"><input type="radio" name="q3" value="a"><span>Somente o valor inicial</span></label>
+              <label class="quiz-option mt-2"><input type="radio" name="q3" value="b"><span>O valor inicial mais os juros já acumulados</span></label>
+            </fieldset>
+            <button type="submit" class="primary-button focus-ring">Ver resultado</button>
+          </form>
+          <p id="quiz-result" class="mt-5 rounded-xl bg-[#ccecf4] p-4 font-bold" aria-live="polite"></p>
+        </div>
+        <div class="space-y-7">
+          <aside class="tip-card p-6">
+            <p class="relative z-10 text-sm font-extrabold uppercase tracking-[0.15em] text-[#d9f36a]">Dica do dia</p>
+            <h2 id="tip-text" class="relative z-10 mt-4 font-['Fraunces'] text-3xl font-bold leading-tight">Anote seus pequenos gastos: eles também contam na sua história financeira.</h2>
+            <button type="button" id="next-tip" class="secondary-button focus-ring relative z-10 mt-6">Próxima dica</button>
+          </aside>
+          <aside class="almanaque-card p-6">
+            <h2 class="font-bold">Você já tem uma meta de economia?</h2>
+            <p class="mt-2 text-[#58716f]">Vote e veja o resultado da turma.</p>
+            <div class="mt-5 grid grid-cols-2 gap-3">
+              <button id="poll-yes" type="button" class="poll-button focus-ring">Sim, já tenho</button>
+              <button id="poll-no" type="button" class="poll-button focus-ring">Ainda não</button>
+            </div>
+            <p id="poll-status" class="mt-4 font-semibold text-[#137c68]" aria-live="polite"></p>
+            <div class="mt-5 space-y-3">
+              <div>
+                <div class="mb-1 flex justify-between text-sm font-bold"><span>Sim</span><span id="yes-percent">0%</span></div>
+                <div class="poll-meter"><span id="yes-meter"></span></div>
+              </div>
+              <div>
+                <div class="mb-1 flex justify-between text-sm font-bold"><span>Não</span><span id="no-percent">0%</span></div>
+                <div class="poll-meter"><span id="no-meter" class="bg-[#ff8c75]"></span></div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="w-full border-t-2 border-[#153b43] px-5 py-8">
+    <div class="mx-auto flex max-w-6xl flex-col justify-between gap-2 text-sm sm:flex-row">
+      <p class="font-bold">Blog Financeiro • Cauã Menezes e Ana Julia Rocha</p>
+      <p class="text-[#42605f]">Feito por estudantes, para estudantes.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+      const formatCurrency = (v) => new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(v || 0);
+
+      const pathMessages = {
+        study: "Boa!! Para isso, também tem que se planejar, pensar no transporte, materiais e alimentação. São sugestões para colocar na ponta do lápis.",
+        work: "Muito bom!! Começar a trabalhar logo depois de se formar é uma ótima chance de criar o hábito de separar uma parte da renda para as suas metas.",
+        business: "Boa sorte! Empreender começa com uma boa organização: pense em separar os gastos pessoais dos custos da sua ideia."
+      };
+      const pathButtons = { study: document.getElementById("path-study"), work: document.getElementById("path-work"), business: document.getElementById("path-business") };
+      Object.entries(pathButtons).forEach(([path, button]) => {
+        button.addEventListener("click", () => {
+          Object.values(pathButtons).forEach((item) => { item.classList.remove("is-selected"); item.setAttribute("aria-pressed", "false"); });
+          button.classList.add("is-selected");
+          button.setAttribute("aria-pressed", "true");
+          document.getElementById("path-message").textContent = pathMessages[path];
+        });
+      });
+
+      const expenseInputs = ["expense-one-value", "expense-two-value", "expense-three-value"].map((id) => document.getElementById(id));
+      function updateExpenseTotal() {
+        const total = expenseInputs.reduce((sum, input) => sum + (Number(input.value) || 0), 0);
+        document.getElementById("expense-total").textContent = formatCurrency(total);
+      }
+      expenseInputs.forEach((input) => input.addEventListener("input", updateExpenseTotal));
+
+      const checks = ["check-one", "check-two", "check-three"].map((id) => document.getElementById(id));
+      function updateProgress() {
+        const complete = checks.filter((c) => c.checked).length;
+        document.getElementById("progress-count").textContent = complete + "/3";
+        document.getElementById("progress-fill").style.width = (complete / checks.length) * 100 + "%";
+        document.getElementById("progress-message").textContent = complete === 3 ? "Parabéns!! Continue assim, tomando bastante cuidado para não cair no descontrole financeiro." : "";
+      }
+      checks.forEach((c) => c.addEventListener("change", updateProgress));
+
+      const suggestionKey = "almanaque-financeiro-sugestoes";
+      const suggestionForm = document.getElementById("suggestion-form");
+      const suggestionInput = document.getElementById("suggestion-input");
+      const suggestionList = document.getElementById("suggestion-list");
+      const suggestionStatus = document.getElementById("suggestion-status");
+      function getSuggestions() { try { return JSON.parse(localStorage.getItem(suggestionKey)) || []; } catch { return []; } }
+      function renderSuggestions() {
+        const suggestions = getSuggestions();
+        suggestionList.innerHTML = "";
+        if (!suggestions.length) {
+          suggestionList.textContent = "Ainda não há sugestões. Que tal deixar a primeira?";
+          suggestionList.className = "mt-2 text-sm text-[#58716f]";
+          return;
+        }
+        suggestionList.className = "mt-2";
+        suggestions.slice(0, 6).forEach((s) => {
+          const item = document.createElement("p");
+          item.className = "suggestion-item";
+          item.textContent = "• " + s;
+          suggestionList.appendChild(item);
+        });
+      }
+      suggestionForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const text = suggestionInput.value.trim();
+        if (!text) { suggestionStatus.textContent = "Escreva uma sugestão antes de enviar."; return; }
+        const suggestions = getSuggestions();
+        suggestions.unshift(text);
+        try { localStorage.setItem(suggestionKey, JSON.stringify(suggestions.slice(0, 20))); } catch {}
+        suggestionInput.value = "";
+        suggestionStatus.textContent = "Muito bem! Agora ela está aqui nas sugestões recentes. Agradecemos por contribuir!";
+        renderSuggestions();
+      });
+      renderSuggestions();
+
+      const interestForm = document.getElementById("interest-form");
+      function updateInterest(event) {
+        if (event) event.preventDefault();
+        const principal = Math.max(0, Number(document.getElementById("principal").value) || 0);
+        const rate = Math.max(0, Number(document.getElementById("rate").value) || 0) / 100;
+        const time = Math.max(0, Number(document.getElementById("time").value) || 0);
+        const simple = principal * (1 + rate * time);
+        const compound = principal * Math.pow(1 + rate, time);
+        const largest = Math.max(simple, compound, 1);
+        document.getElementById("simple-result").textContent = formatCurrency(simple);
+        document.getElementById("compound-result").textContent = formatCurrency(compound);
+        document.getElementById("simple-bar").style.width = (simple / largest) * 100 + "%";
+        document.getElementById("compound-bar").style.width = (compound / largest) * 100 + "%";
+        document.getElementById("interest-note").textContent = compound >= simple ? "Nos juros compostos, os rendimentos também passam a render ao longo do tempo." : "Compare os valores: tempo e taxa influenciam bastante o resultado.";
+      }
+      interestForm.addEventListener("submit", updateInterest);
+      updateInterest();
+
+      document.getElementById("quiz-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const answers = new FormData(event.currentTarget);
+        const selected = ["q1", "q2", "q3"].map((n) => answers.get(n));
+        if (selected.some((a) => !a)) { document.getElementById("quiz-result").textContent = "Responda às três perguntas para descobrir seu resultado."; return; }
+        const correct = [selected[0] === "b", selected[1] === "a", selected[2] === "b"].filter(Boolean).length;
+        const resultText = correct === 3 ? "3 de 3, é isso aí! Mandou muito bem :) você já domina ideias importantes de educação financeira." : correct === 2 ? "2 de 3! Ótimo começo. Reveja a questão que faltou e continue explorando o blog." : "Você acertou " + correct + " de 3. Tudo bem, aprender finanças é treino. Tente novamente!";
+        document.getElementById("quiz-result").textContent = resultText;
+      });
+
+      const tips = [
+        "Anote seus pequenos gastos: eles também contam na sua história financeira.",
+        "Antes de comprar, espere um dia, e reflita se realmente precisa. Muitas compras por impulso perdem a graça com o tempo.",
+        "Uma meta fica mais fácil de alcançar quando você define valor, prazo e um passo por vez.",
+        "Comparar preços é bom; comparar necessidade e desejo é ainda melhor."
+      ];
+      let tipIndex = 0;
+      document.getElementById("next-tip").addEventListener("click", () => {
+        tipIndex = (tipIndex + 1) % tips.length;
+        document.getElementById("tip-text").textContent = tips[tipIndex];
+      });
+
+      const pollKey = "almanaque-financeiro-enquete";
+      const voteKey = "almanaque-financeiro-voto";
+      function getPoll() { try { return JSON.parse(localStorage.getItem(pollKey)) || { yes: 12, no: 5 }; } catch { return { yes: 12, no: 5 }; } }
+      function renderPoll() {
+        const poll = getPoll();
+        const total = poll.yes + poll.no || 1;
+        const yesPercent = Math.round((poll.yes / total) * 100);
+        document.getElementById("yes-percent").textContent = yesPercent + "%";
+        document.getElementById("no-percent").textContent = (100 - yesPercent) + "%";
+        document.getElementById("yes-meter").style.width = yesPercent + "%";
+        document.getElementById("no-meter").style.width = (100 - yesPercent) + "%";
+      }
+      function vote(choice) {
+        try {
+          if (localStorage.getItem(voteKey)) { document.getElementById("poll-status").textContent = "Você já deixou seu voto. Se quiser trocar, recarregue a página. Agradecemos pela participação!"; return; }
+          const poll = getPoll();
+          poll[choice] += 1;
+          localStorage.setItem(pollKey, JSON.stringify(poll));
+          localStorage.setItem(voteKey, choice);
+        } catch {}
+        document.getElementById("poll-status").textContent = "Seu voto foi registrado! Veja como ficou a enquete.";
+        renderPoll();
+      }
+      document.getElementById("poll-yes").addEventListener("click", () => vote("yes"));
+      document.getElementById("poll-no").addEventListener("click", () => vote("no"));
+      renderPoll();
+    });
+  </script>
+</body>
+</html>
